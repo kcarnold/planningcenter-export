@@ -73,7 +73,8 @@ with redirect_stdout(output):
                 continue
             print(f"### {attrs['title']}\n\n")
             if attrs['description']:
-                print(attrs['description'].replace('\n', '\\\n'))
+                with_newlines_escaped = attrs['description'].replace('\n', '\\\n')
+                print(with_newlines_escaped.rstrip('\\\n'))
             print('\n\n')
         elif item_type == "song":
             if include_lyrics:
