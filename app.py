@@ -61,6 +61,10 @@ def get_lyrics(song):
 
 include_lyrics = st.checkbox("Include lyrics", value=False)
 
+def escape_newlines_md(text):
+    with_newlines_escaped = text.replace('\n', '\\\n')
+    return with_newlines_escaped.rstrip('\\\n')
+
 output = io.StringIO()
 with redirect_stdout(output):
     prev_item_type = None
@@ -73,8 +77,7 @@ with redirect_stdout(output):
                 continue
             print(f"### {attrs['title']}\n\n")
             if attrs['description']:
-                with_newlines_escaped = attrs['description'].replace('\n', '\\\n')
-                print(with_newlines_escaped.rstrip('\\\n'))
+                print(escape_newlines_md(attrs['description']))
             print('\n\n')
         elif item_type == "song":
             if include_lyrics:
@@ -83,7 +86,7 @@ with redirect_stdout(output):
                 print(f"### {attrs['title']}\n\n")
                 lyrics = get_lyrics(song)
                 if lyrics:
-                    print(lyrics)
+                    print(escape_newlines_md(lyrics))
                 else:
                     print("No lyrics found.")
                 print('\n\n')
