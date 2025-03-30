@@ -57,6 +57,8 @@ def get_lyrics(song):
     for arrangement in arrangements['data']:
         lyrics = arrangement['attributes']['lyrics']
         if lyrics:
+            if sequence := arrangement['attributes'].get('sequence'):
+                lyrics = lyrics + '\n\nSequence: *' + ', '.join(sequence) + '*'
             return lyrics
 
 include_lyrics = st.checkbox("Include lyrics", value=False)
